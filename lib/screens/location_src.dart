@@ -22,13 +22,13 @@ class _MyHomePageState extends State<LocationScreen> {
       body: Center(
         child: Column(
           children: [
-            const Text('Screen Two'),
+            const Text('Screen Two'),/*
             FractionallySizedBox(
               alignment: Alignment.center,
               widthFactor: .9,
               heightFactor: .3,
               child: Image.asset('assets/images/ideahub.jpg'),
-            ),
+            ),*/
           ],
         ),
       ),
