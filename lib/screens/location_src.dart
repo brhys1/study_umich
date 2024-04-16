@@ -23,13 +23,9 @@ class _MyHomePageState extends State<LocationScreen> {
       body: Center(
         child: Column(
           children: [
-            const Text('Screen Two'),/*
-            FractionallySizedBox(
-              alignment: Alignment.center,
-              widthFactor: .9,
-              heightFactor: .3,
-              child: Image.asset('assets/images/ideahub.jpg'),
-            ),*/
+            Text(widget.location.name),
+            Image(image: AssetImage('assets/images/$pngname.jpg')),
+
             ElevatedButton(
               child: const Text('Back'),
               onPressed: () {
