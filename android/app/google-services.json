@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "343128889726",
+    "firebase_url": "https://ktp-study-default-rtdb.firebaseio.com",
     "project_id": "ktp-study",
     "storage_bucket": "ktp-study.appspot.com"
   },
