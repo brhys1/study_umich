@@ -30,20 +30,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Navigate to second route when tapped.
               },
             ),
-            ElevatedButton(
-              child: const Text('Surprise Me'),
-              onPressed: () {
-                Navigator.push (
-                  context, MaterialPageRoute(builder: (context) => LocationScreen(location: widget.locations[0])),
-                );
-              },
-            ),
             Flexible (
               child : ListView.builder(
                 itemCount: widget.locations.length,
                 itemBuilder: (context, index){
                   return ListTile (
-                    title: Text(widget.locations[index].name),
+                    title : Text(widget.locations[index].name),
+                    onTap: () {
+                      Navigator.push (context, MaterialPageRoute(builder: (context) => LocationScreen(location: widget.locations[index])),);
+                    },
                   );
                 },
               ),
