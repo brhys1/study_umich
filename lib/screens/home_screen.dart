@@ -24,10 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
               'Study Umich',
               style: TextStyle(fontSize: 45),
             ),
-            const SizedBox(
-              width: 200, height: 20,
-              child: Text('search'),
-            ),
             ElevatedButton(
               child: const Text('Find a Spot'),
               onPressed: () {

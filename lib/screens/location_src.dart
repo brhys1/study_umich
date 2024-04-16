@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:umich_study/location_class/location_outline.dart';
 import 'package:umich_study/location_class/Location.dart';
+import 'package:umich_study/screens/home_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, required this.location});
@@ -29,6 +30,12 @@ class _MyHomePageState extends State<LocationScreen> {
               heightFactor: .3,
               child: Image.asset('assets/images/ideahub.jpg'),
             ),*/
+            ElevatedButton(
+              child: const Text('Back'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         ),
       ),
