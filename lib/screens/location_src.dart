@@ -23,9 +23,21 @@ class _MyHomePageState extends State<LocationScreen> {
       body: Center(
         child: Column(
           children: [
-            Text(widget.location.name),
+            Text(widget.location.name,
+            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
             Image(image: AssetImage('assets/images/$pngname.jpg')),
-
+            Text('Lighting: ${widget.location.lighting}',
+                style: const TextStyle(fontSize: 30,)),
+            Text('FoodAccess: ${widget.location.foodAccess}',
+                style: const TextStyle(fontSize: 30,)),
+            Text('Collaboration: ${widget.location.collaboration}',
+                style: const TextStyle(fontSize: 30,)),
+            Text('Noise: ${widget.location.noise}',
+                style: const TextStyle(fontSize: 30,)),
+            Text('Comfort: ${widget.location.comfort}',
+                style: const TextStyle(fontSize: 30,)),
+            Text('Crowdedness: ${widget.location.crowdedness}',
+                style: const TextStyle(fontSize: 30,)),
             ElevatedButton(
               child: const Text('Back'),
               onPressed: () {
