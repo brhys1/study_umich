@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:umich_study/location_class/location_outline.dart';
 import 'package:umich_study/location_class/Location.dart';
-import 'package:umich_study/screens/home_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, required this.location});
@@ -17,7 +15,6 @@ class _MyHomePageState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var pngname = widget.location.pngname;
 
     return Scaffold(
       body: Center(
@@ -25,7 +22,7 @@ class _MyHomePageState extends State<LocationScreen> {
           children: [
             Text(widget.location.name,
             style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
-            Image(image: AssetImage('assets/images/$pngname.jpg')),
+            Image(image: AssetImage('assets/images/${widget.location.pngname}.jpg')),
             Text('Lighting: ${widget.location.lighting}',
                 style: const TextStyle(fontSize: 30,)),
             Text('FoodAccess: ${widget.location.foodAccess}',

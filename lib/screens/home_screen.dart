@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:umich_study/location_class/location_outline.dart';
 import 'package:umich_study/location_class/Location.dart';
 import 'package:umich_study/screens/location_src.dart';
+import 'package:umich_study/screens/find_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.locations});
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               child: const Text('Find a Spot'),
               onPressed: () {
-                // Navigate to second route when tapped.
+                Navigator.push (context, MaterialPageRoute(builder: (context) => const FindScreen()));
               },
             ),
             Flexible (
