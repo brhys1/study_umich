@@ -5,21 +5,22 @@ import 'package:umich_study/location_class/Location.dart';
 import 'package:umich_study/screens/home_screen.dart';
 import 'package:umich_study/screens/location_src.dart';
 
-class FindScreen extends StatefulWidget {
-  const FindScreen({super.key, required this.locations});
+class RatingScreen extends StatefulWidget {
+  const RatingScreen({super.key, required this.locations, required this.myLocation});
 
   final List<Location> locations;
+  final Location myLocation;
 
   @override
-  State<FindScreen> createState() => _MyHomePageState();
+  State<RatingScreen> createState() => _MyHomePageState();
 }
 
 enum FoodAccess {yes, no}
-enum Lighting {fluorescent, natural, warm, dark, any}
-enum Collaboration {solo, smallGroup, bigGroup, any}
+enum Lighting {fluorescent, natural, warm, dark}
+enum Collaboration {solo, smallGroup, bigGroup}
 
 
-class _MyHomePageState extends State<FindScreen> {
+class _MyHomePageState extends State<RatingScreen> {
 
   Location l = Location();
   FoodAccess? foodAccess;
@@ -34,8 +35,8 @@ class _MyHomePageState extends State<FindScreen> {
       body: Center(
         child: ListView(
           children: [
-            const Text('Find Location Screen',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            Text('Rating Screen for ${widget.myLocation.name}',
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const Text ('How crowded would you like it?'),
             RatingBar.builder(
@@ -81,57 +82,44 @@ class _MyHomePageState extends State<FindScreen> {
             ),
             const Text ('Do you want to collaborate with others?'),
             ListTile(
-                  title: const Text('Solo Work/Locking in'),
-                  leading: Radio<Collaboration>(
-                    visualDensity: VisualDensity.compact,
-                    value: Collaboration.solo,
-                    groupValue: collaboration,
-                    onChanged: (Collaboration? value) {
-                      setState(() {
-                        collaboration = value;
-                      });
-                    },
-                  ),
-                ),
-              ListTile(
-                title: const Text('Small Group'),
-                leading: Radio<Collaboration>(
-                  visualDensity: VisualDensity.compact,
-                  value: Collaboration.smallGroup,
-                  groupValue: collaboration,
-                  onChanged: (Collaboration? value) {
-                    setState(() {
-                      collaboration = value;
-                    });
-                  },
-                ),
+              title: const Text('Solo Work/Locking in'),
+              leading: Radio<Collaboration>(
+                visualDensity: VisualDensity.compact,
+                value: Collaboration.solo,
+                groupValue: collaboration,
+                onChanged: (Collaboration? value) {
+                  setState(() {
+                    collaboration = value;
+                  });
+                },
               ),
-              ListTile(
-                title: const Text('Big Group'),
-                leading: Radio<Collaboration>(
-                  visualDensity: VisualDensity.compact,
-                  value: Collaboration.bigGroup,
-                  groupValue: collaboration,
-                  onChanged: (Collaboration? value) {
-                    setState(() {
-                      collaboration = value;
-                    });
-                  },
-                ),
+            ),
+            ListTile(
+              title: const Text('Small Group'),
+              leading: Radio<Collaboration>(
+                visualDensity: VisualDensity.compact,
+                value: Collaboration.smallGroup,
+                groupValue: collaboration,
+                onChanged: (Collaboration? value) {
+                  setState(() {
+                    collaboration = value;
+                  });
+                },
               ),
-              ListTile(
-                title: const Text('Any Type'),
-                leading: Radio<Collaboration>(
-                  visualDensity: VisualDensity.compact,
-                  value: Collaboration.any,
-                  groupValue: collaboration,
-                  onChanged: (Collaboration? value) {
-                    setState(() {
-                      collaboration = value;
-                    });
-                  },
-                ),
+            ),
+            ListTile(
+              title: const Text('Big Group'),
+              leading: Radio<Collaboration>(
+                visualDensity: VisualDensity.compact,
+                value: Collaboration.bigGroup,
+                groupValue: collaboration,
+                onChanged: (Collaboration? value) {
+                  setState(() {
+                    collaboration = value;
+                  });
+                },
               ),
+            ),
 
             const Text ('Would you like access to food?'),
             ListTile(
@@ -219,7 +207,6 @@ class _MyHomePageState extends State<FindScreen> {
                 if (collaboration == Collaboration.solo) {l.collaboration = "solo"; }
                 else if (collaboration == Collaboration.smallGroup) {l.collaboration = "smallGroup"; }
                 else if (collaboration == Collaboration.bigGroup) {l.collaboration = "bigGroup"; }
-                else if (collaboration == Collaboration.any) {l.collaboration = "any"; }
                 else {l.collaboration = ""; }
 
                 if (foodAccess == FoodAccess.yes) {l.foodAccess = true; }
@@ -232,7 +219,7 @@ class _MyHomePageState extends State<FindScreen> {
                 else if (lighting == Lighting.dark) {l.lighting = "dark"; }
                 else { l.lighting == ""; }
 
-                Navigator.push (context, MaterialPageRoute(builder: (context) => LocationScreen(location: l, locations: widget.locations)));
+                Navigator.of(context).pop();
               },
             ),
             ElevatedButton(

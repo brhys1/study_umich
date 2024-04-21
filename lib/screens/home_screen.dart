@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               child: const Text('Find a Spot'),
               onPressed: () {
-                Navigator.push (context, MaterialPageRoute(builder: (context) => const FindScreen()));
+                Navigator.push (context, MaterialPageRoute(builder: (context) => FindScreen(locations: widget.locations)));
               },
             ),
             Flexible (
@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return ListTile (
                     title : Text(widget.locations[index].name),
                     onTap: () {
-                      Navigator.push (context, MaterialPageRoute(builder: (context) => LocationScreen(location: widget.locations[index])),);
+                      Navigator.push (context, MaterialPageRoute(builder: (context) => LocationScreen(location: widget.locations[index], locations: widget.locations)));
                     },
                   );
                 },
