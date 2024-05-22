@@ -49,7 +49,7 @@ Future<List<Location>> locationBuilder() async {
   Location l = Location();
   await db.collection("Study_Spots").get().then((event) {
     for (var doc in event.docs) {
-      Map<String, dynamic> data = doc.data as Map<String, dynamic>;
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       l.name = data['Name'].toString();
       print(l.name);
     }

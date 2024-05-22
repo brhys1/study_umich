@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:umich_study/location_class/Location.dart';
 import 'package:umich_study/screens/home_screen.dart';
 import 'package:umich_study/screens/location_src.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RatingScreen extends StatefulWidget {
   const RatingScreen({super.key, required this.locations, required this.myLocation});
@@ -27,6 +28,96 @@ class _MyHomePageState extends State<RatingScreen> {
   Lighting? lighting;
   Collaboration? collaboration;
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+
+  Future<bool> checkIfSpotExists(String spotName) async {
+    try {
+        DocumentSnapshot documentSnapshot = await firestore.collection(
+            'Study_Spots').doc(spotName).get();
+        if (documentSnapshot.exists) {
+          print('Document exists');
+          return true;
+        }
+        else {
+          print('Document does not exist');
+          return false;
+        }
+    }
+    catch (e) {
+      print('Error checking document existence: $e');
+      return false;
+    }
+  }
+
+  Future<void> writeReviewToDatabase() async {
+    print('WRITING REVIEW TO DATABASE');
+    bool spotExists = await checkIfSpotExists(l.name);
+
+    if (spotExists) {
+      await writeToExistingDocument();
+    }
+    else {
+      await writeToNewDocument();
+    }
+  }
+
+  Future<void> writeToNewDocument() async {
+    firestore.collection('Study_Spots').doc(l.name).set({
+      'Collaboration': [l.collaboration],
+      'Comfort': [l.comfort],
+      'Crowdedness': [l.crowdedness],
+      'FoodAccess': [l.foodAccess],
+      'Lighting': [l.lighting],
+      'Noise': [l.noise],
+    }).then((_) {
+      print('Success adding TEST');
+    }).catchError((error) {
+      print('Error adding TEST: $error');
+    });
+  }
+
+  Future<void> writeToExistingDocument() async {
+    // Must read data for each document and then write back all data + new data
+    DocumentReference docRef = firestore.collection('Study_Spots').doc(l.name);
+    DocumentSnapshot docSnapshot = await docRef.get();
+
+    // Read the current ratings array
+    Map<String, dynamic> ratings = docSnapshot.data() as Map<String, dynamic>;
+
+    // create new arrays to add new rating
+    dynamic collaborationRatings = ratings['Collaboration'];
+    collaborationRatings.add(l.collaboration);
+
+    dynamic comfortRatings = ratings['Comfort'];
+    comfortRatings.add(l.comfort);
+
+    dynamic crowdednessRatings = ratings['Crowdedness'];
+    crowdednessRatings.add(l.crowdedness);
+
+    dynamic foodAccessRatings = ratings['FoodAccess'];
+    foodAccessRatings.add(l.foodAccess);
+
+    dynamic lightingRatings = ratings['Lighting'];
+    lightingRatings.add(l.lighting);
+
+    dynamic noiseRatings = ratings['Noise'];
+    noiseRatings.add(l.noise);
+
+    firestore.collection('Study_Spots').doc(l.name).set({
+      'Collaboration': collaborationRatings,
+      'Comfort': comfortRatings,
+      'Crowdedness': crowdednessRatings,
+      'FoodAccess': foodAccessRatings,
+      'Lighting': lightingRatings,
+      'Noise': noiseRatings,
+    }).then((_) {
+      print('Success adding TEST');
+    }).catchError((error) {
+      print('Error adding TEST: $error');
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +129,7 @@ class _MyHomePageState extends State<RatingScreen> {
             Text('Rating Screen for ${widget.myLocation.name}',
               style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            const Text ('How crowded would you like it?'),
+            const Text ('How crowded is the spot typically?'),
             RatingBar.builder(
                 minRating: 0,
                 maxRating: 5,
@@ -52,7 +143,7 @@ class _MyHomePageState extends State<RatingScreen> {
                       l.crowdedness = rating;
                     })
             ),
-            const Text ('How comfortable would you like it?'),
+            const Text ('How would you rate the comfortability?'),
             RatingBar.builder(
                 minRating: 0,
                 maxRating: 5,
@@ -66,7 +157,7 @@ class _MyHomePageState extends State<RatingScreen> {
                       l.comfort = rating;
                     })
             ),
-            const Text ('What do you want the noise level to look like?'),
+            const Text ('How would you rate the noise level?'),
             RatingBar.builder(
                 minRating: 0,
                 maxRating: 5,
@@ -80,7 +171,7 @@ class _MyHomePageState extends State<RatingScreen> {
                       l.noise = rating;
                     })
             ),
-            const Text ('Do you want to collaborate with others?'),
+            const Text ("How big is a typical group working in this space?"),
             ListTile(
               title: const Text('Solo Work/Locking in'),
               leading: Radio<Collaboration>(
@@ -121,7 +212,7 @@ class _MyHomePageState extends State<RatingScreen> {
               ),
             ),
 
-            const Text ('Would you like access to food?'),
+            const Text ('Does this spot have access to food?'),
             ListTile(
               title: const Text('Yes'),
               leading: Radio<FoodAccess>(
@@ -148,7 +239,7 @@ class _MyHomePageState extends State<RatingScreen> {
                 },
               ),
             ),
-            const Text ('What type of lighting will make you the most productive?'),
+            const Text ('How would you describe its lighting?'),
             ListTile(
               title: const Text('Natural'),
               leading: Radio<Lighting>(
@@ -218,6 +309,8 @@ class _MyHomePageState extends State<RatingScreen> {
                 else if (lighting == Lighting.fluorescent) {l.lighting = "fluorescent"; }
                 else if (lighting == Lighting.dark) {l.lighting = "dark"; }
                 else { l.lighting == ""; }
+
+                writeReviewToDatabase();
 
                 Navigator.of(context).pop();
               },
